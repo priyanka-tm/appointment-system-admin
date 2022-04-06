@@ -1,0 +1,105 @@
+import { useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+// material
+import {
+  Menu,
+  MenuItem,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Modal,
+  Box,
+  Grid,
+  TextField,
+  Paper,
+  Button,
+  CircularProgress
+} from '@mui/material';
+// component
+import Iconify from '../../../components/Iconify';
+import DepartmentModal from 'src/components/DepartmentModal';
+import { apiInstance } from './../../../httpClient/httpClient/index';
+
+// ----------------------------------------------------------------------
+
+export default function UserMoreMenu(props) {
+  const ref = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [newData, setNewData] = useState({});
+
+  console.log('data:----- ', props.data?._id);
+  const handleOpen = (data) => {
+    console.log('data:----- ', data);
+    setNewData(data);
+    setTimeout(() => {}, 2000);
+    setOpen(true);
+    setIsOpen(false);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async () => {
+    console.log('handleDelete: ');
+    try {
+      const res = await apiInstance.delete(`category/${props.data?._id}`);
+      console.log('res: ', res);
+      props.getAllData();
+    } catch (e) {
+      console.log('e: ', e.response);
+    }
+  };
+
+  return (
+    <>
+      <IconButton ref={ref} onClick={() => setIsOpen(true)}>
+        <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
+      </IconButton>
+
+      <Menu
+        open={isOpen}
+        anchorEl={ref.current}
+        onClose={() => setIsOpen(false)}
+        PaperProps={{
+          sx: { width: 200, maxWidth: '100%' }
+        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <MenuItem sx={{ color: 'text.secondary' }} onClick={handleDelete}>
+          <ListItemIcon>
+            <Iconify icon="eva:trash-2-outline" width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => handleOpen(props.data)}
+          component={RouterLink}
+          to="#"
+          sx={{ color: 'text.secondary' }}
+        >
+          <ListItemIcon>
+            <Iconify icon="eva:edit-fill" width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+        </MenuItem>
+      </Menu>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <DepartmentModal
+          isEditData
+          handleClose={handleClose}
+          singleData={newData}
+          getAllData={props.getAllData}
+        />
+      </Modal>
+    </>
+  );
+}
