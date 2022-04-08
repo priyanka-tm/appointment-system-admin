@@ -214,7 +214,7 @@ export default function Doctor() {
                         <TableCell align="left">{email}</TableCell>
                         <TableCell align="left">{phone}</TableCell>
                         <TableCell align="left">{address}</TableCell>
-                        <TableCell align="left">{category.categoryName}</TableCell>
+                        <TableCell align="left">{category?.categoryName}</TableCell>
                         {/* <TableCell align="left">
                             <Label
                               variant="ghost"

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { filter } from 'lodash';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import Newpatient from './Newpatient';
 // material
 import {
   Card,
@@ -17,7 +16,7 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -28,6 +27,8 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashbo
 //
 import USERLIST from '../_mocks_/user';
 import { apiInstance } from 'src/httpClient/httpClient';
+import PatientModel from 'src/components/PatientModel';
+import { Modal } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
@@ -76,9 +77,9 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [post, setPost] = useState([]);
-  const [loader, setLoader] = useState(false);
+  // const [loader, setLoader] = useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -131,15 +132,13 @@ export default function Patient() {
   }, []);
 
   const getPatient = async () => {
-    setLoader(true);
+    // setLoader(true);
     try {
       const res = await apiInstance.get('user/?role=patient');
       console.log('resss===', res);
       setPost(res.data.data);
-      setLoader(false);
     } catch (error) {
-      setLoader(false);
-      console.log('resss===', error);
+      console.log('resss===', error.response);
     }
   };
 
@@ -170,7 +169,16 @@ export default function Patient() {
           >
             New Patient
           </Button>
-          {open && <Newpatient closeModal={handleClose} openModal={open} />}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            
+          <PatientModel closeModal={handleClose} />
+          </Modal>
+          {/* {open && <Newpatient closeModal={handleClose} getAllpatient={getPatient}  openModal={open} />} */}
         </Stack>
 
         <Card>
@@ -179,7 +187,6 @@ export default function Patient() {
             filterName={filterName}
             onFilterName={handleFilterByName}
           />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -193,7 +200,8 @@ export default function Patient() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {post.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {post.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
                     console.log('-------post', post);
                     const { id, name, email, phone, address } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
@@ -228,7 +236,7 @@ export default function Patient() {
                           </TableCell> */}
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreMenu patient={row}  getAllpatient={getPatient} type='patient' />
                         </TableCell>
                       </TableRow>
                     );

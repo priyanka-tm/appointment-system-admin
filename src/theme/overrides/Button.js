@@ -6,7 +6,7 @@ export default function Button(theme) {
       styleOverrides: {
         root: {
           '&:hover': {
-            boxShadow: 'none'
+            boxShadow: 'none',
             // color:'#2F80ED'
           }
         },

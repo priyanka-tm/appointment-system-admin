@@ -19,6 +19,7 @@ import {
 import Iconify from '../../../components/Iconify';
 import DepartmentModal from 'src/components/DepartmentModal';
 import { apiInstance } from './../../../httpClient/httpClient/index';
+import PatientModel from 'src/components/PatientModel';
 
 // ----------------------------------------------------------------------
 
@@ -28,9 +29,7 @@ export default function UserMoreMenu(props) {
   const [open, setOpen] = useState(false);
   const [newData, setNewData] = useState({});
 
-  console.log('data:----- ', props.data?._id);
   const handleOpen = (data) => {
-    console.log('data:----- ', data);
     setNewData(data);
     setTimeout(() => {}, 2000);
     setOpen(true);
@@ -93,12 +92,13 @@ export default function UserMoreMenu(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <DepartmentModal
+        {props.type == 'patient' ? <PatientModel/> : props.type == 'Department' ?  <DepartmentModal
           isEditData
           handleClose={handleClose}
           singleData={newData}
           getAllData={props.getAllData}
-        />
+        /> : null }
+    
       </Modal>
     </>
   );

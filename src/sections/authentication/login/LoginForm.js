@@ -66,8 +66,7 @@ export default function LoginForm() {
         navigate('dashboard/patient');
       }
     } catch (error) {
-      setErrorMessage('Email or Password invalid!');
-
+      setErrorMessage('email or password invalid!');
       console.log('error===', error.response);
     }
   };
@@ -115,7 +114,7 @@ export default function LoginForm() {
             />
           </FormControl>
           {errorMessage && (
-            <div color="red" className="error">
+            <div style={{color:"red"}} className="error">
               {' '}
               {errorMessage}{' '}
             </div>
