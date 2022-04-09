@@ -21,10 +21,12 @@ import DepartmentModal from 'src/components/DepartmentModal';
 import { apiInstance } from './../../../httpClient/httpClient/index';
 import PatientModel from 'src/components/PatientModel';
 import { DashboardCustomizeRounded } from '@mui/icons-material';
+import DoctorModal from 'src/components/DoctorModal';
 
 // ----------------------------------------------------------------------
 
 export default function UserMoreMenu(props) {
+  console.log('props: ', props.data);
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -51,8 +53,8 @@ export default function UserMoreMenu(props) {
       } catch (e) {
         console.log('e: ', e.response);
       }
-    }else if(props.type=="patient"){
-      // console.log("-----------------get-------------",props.getAllpatient);
+
+    } else if(props.type=="patient"){
       try {
         const res = await apiInstance.delete(`user/${props.data?._id}`);
         console.log('res: ', res);
@@ -60,7 +62,20 @@ export default function UserMoreMenu(props) {
       } catch (e) {
         console.log('e: ', e.response);
       }
-    };
+    }  else if (props.type == 'doctor') {
+      try {
+        const res = await apiInstance.delete(`user/${props.data?._id}`);
+        console.log('res: ', res);
+        props.getAllDoctor();
+        setIsOpen(false);
+      } catch (e) {
+        console.log('e: ', e.response);
+      }
+    }
+
+
+
+   
     }
     
 
@@ -117,8 +132,39 @@ export default function UserMoreMenu(props) {
           handleClose={handleClose}
           singleData={newData}
           getAllData={props.getAllData}
-        /> : null }
+        /> : props.type == 'Department' ? (
+          <DepartmentModal
+            isEditData
+            handleClose={handleClose}
+            singleData={newData}
+            getAllData={props.getAllData}
+          />
+        ) : props.type == 'doctor' ? (
+          <DoctorModal
+            isDoctorEdit
+            closeModal={handleClose}
+            doctorSingleData={props.data}
+            getAllDoctor={props.getAllDoctor}
+          />
+        ) : null }
     
+        {/* {props.type == 'patient' ? (
+          <PatientModel />
+        ) : props.type == 'Department' ? (
+          <DepartmentModal
+            isEditData
+            handleClose={handleClose}
+            singleData={newData}
+            getAllData={props.getAllData}
+          />
+        ) : props.type == 'doctor' ? (
+          <DoctorModal
+            isDoctorEdit
+            closeModal={handleClose}
+            doctorSingleData={props.data}
+            getAllDoctor={props.getAllDoctor}
+          />
+        ) : null} */}
       </Modal>
     </>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import {IconButton,CircularProgress} from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -19,6 +19,8 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loader, setLoader] = useState(false);
+
   let navigate = useNavigate();
 
   const [values, setValues] = React.useState({
@@ -49,6 +51,8 @@ export default function LoginForm() {
       email: email,
       password: password
     };
+    console.log('data: ', data);
+    setLoader(true)
     try {
 
       const res = await apiInstance.post('auth/login', data);
@@ -63,9 +67,12 @@ export default function LoginForm() {
           res.data.data
         );
         console.log('resssssssss status',res.status);
+      setLoader(false);
+
         navigate('dashboard/patient');
       }
     } catch (error) {
+      setLoader(false);
       setErrorMessage('email or password invalid!');
       console.log('error===', error.response);
     }
@@ -126,7 +133,8 @@ export default function LoginForm() {
             style={{ width: '92%', height: '10%', marginTop: '3%' }}
             onClick={login}
           >
-            Login
+            Login   
+            {loader  && <CircularProgress color="inherit" size={15} style={{ marginLeft: '10px' }} />}
           </Button>
         </Stack>
       </div>
