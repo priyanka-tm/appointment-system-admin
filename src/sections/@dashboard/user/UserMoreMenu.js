@@ -30,10 +30,9 @@ export default function UserMoreMenu(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [newData, setNewData] = useState({});
-  const [docData, setDocData] = useState({});
+
   const handleOpen = (data) => {
     setNewData(data);
-    setDocData(data);
     setTimeout(() => {}, 2000);
     setOpen(true);
     setIsOpen(false);
@@ -118,7 +117,6 @@ export default function UserMoreMenu(props) {
           <DoctorModal
             isDoctorEdit
             closeModal={handleClose}
-            docData={docData}
             doctorSingleData={props.data}
             getAllDoctor={props.getAllDoctor}
           />
