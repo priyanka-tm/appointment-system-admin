@@ -225,7 +225,7 @@ export default function Doctor() {
                           </TableCell> */}
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreMenu type='doctor'/>
                         </TableCell>
                       </TableRow>
                     );

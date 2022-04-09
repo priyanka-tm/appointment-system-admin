@@ -49,9 +49,8 @@ export default function LoginForm() {
       email: email,
       password: password
     };
-    console.log('data: ', data);
-
     try {
+
       const res = await apiInstance.post('auth/login', data);
       console.log('res: ', res);
 
@@ -63,6 +62,7 @@ export default function LoginForm() {
           res.data.data.phone,
           res.data.data
         );
+        console.log('resssssssss status',res.status);
         navigate('dashboard/patient');
       }
     } catch (error) {

@@ -136,6 +136,7 @@ export default function Department() {
       const res = await apiInstance.get('category');
       console.log('resss===', res);
       setPost(res.data.data);
+      
     } catch (error) {
       console.log('resss===', error.response);
     }
