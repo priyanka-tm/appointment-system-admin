@@ -15,7 +15,8 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  Modal
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -25,8 +26,8 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
 //
 import USERLIST from '../_mocks_/user';
-import Newdoctor from './Newdoctor';
 import { apiInstance } from 'src/httpClient/httpClient';
+import DoctorModal from 'src/components/DoctorModal';
 
 // ----------------------------------------------------------------------
 
@@ -75,7 +76,7 @@ export default function Doctor() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [post, setPost] = useState([]);
 
   const handleRequestSort = (event, property) => {
@@ -129,10 +130,10 @@ export default function Doctor() {
   }, []);
 
   const getDoctor = async () => {
+    console.log('------get all doc-----------------------------------------');
     // setLoader(true);
     try {
       const res = await apiInstance.get('user/?role=doctor');
-      console.log('resss===', res);
       setPost(res.data.data);
     } catch (error) {
       console.log('resss===', error.response);
@@ -164,9 +165,18 @@ export default function Doctor() {
             to="#"
             startIcon={<Iconify icon="eva:plus-fill" onClick={handleOpen} />}
           >
-            New Doctor
+            add Doctor
           </Button>
-          {open && <Newdoctor closeModal={handleClose} openModal={open} />}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <DoctorModal closeModal={handleClose} getAllDoctor={getDoctor} />
+          </Modal>
+
+          {/* {open && <DoctorModal closeModal={handleClose} openModal={open} getDoctor={getDoctor} />} */}
         </Stack>
 
         <Card>
@@ -190,7 +200,6 @@ export default function Doctor() {
                 />
                 <TableBody>
                   {post.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    console.log('row: ', row);
                     const { id, name, email, phone, address, category } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -225,7 +234,7 @@ export default function Doctor() {
                           </TableCell> */}
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreMenu type="doctor" data={row} getAllDoctor={getDoctor} />
                         </TableCell>
                       </TableRow>
                     );

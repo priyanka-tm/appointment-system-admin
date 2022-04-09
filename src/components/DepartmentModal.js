@@ -40,7 +40,7 @@ export default function DepartmentModal({ handleClose, open, isEditData, getAllD
   const handleChange = (e) => setName(e.target.value);
 
   const handleCreateDepartment = async () => {
-    const data = {
+    const data = {  
       categoryName: name
     };
     setLoader(true);
