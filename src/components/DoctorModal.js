@@ -83,7 +83,6 @@ const DoctorModal = ({
 
   useEffect(() => {
     getAlldepartmentname();
-    // getAlldoctorname();
   }, []);
   // console.log(doctorData);
   const saveUser = async (e) => {

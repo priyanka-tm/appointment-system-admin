@@ -42,7 +42,7 @@ export default function UserMoreMenu(props) {
   };
 
   const handleDelete = async () => {
-    if (props.type == 'category') {
+    if (props.type == 'Department') {
       try {
         const res = await apiInstance.delete(`category/${props.data?._id}`);
         console.log('res: ', res);

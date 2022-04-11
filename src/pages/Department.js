@@ -174,7 +174,7 @@ export default function Department() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <DepartmentModal handleClose={handleClose} />
+            <DepartmentModal handleClose={handleClose} getAllData={getDepartment} />
           </Modal>
           {/* {open && <DepartmentModal handleClose={handleClose} open={open} />} */}
         </Stack>
