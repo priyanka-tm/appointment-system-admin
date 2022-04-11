@@ -20,6 +20,7 @@ import Iconify from '../../../components/Iconify';
 import DepartmentModal from 'src/components/DepartmentModal';
 import { apiInstance } from './../../../httpClient/httpClient/index';
 import PatientModel from 'src/components/PatientModel';
+import { DashboardCustomizeRounded } from '@mui/icons-material';
 import DoctorModal from 'src/components/DoctorModal';
 
 // ----------------------------------------------------------------------
@@ -30,9 +31,11 @@ export default function UserMoreMenu(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [newData, setNewData] = useState({});
+  const [data,setData] = useState({})
 
   const handleOpen = (data) => {
     setNewData(data);
+    setData(data);
     setTimeout(() => {}, 2000);
     setOpen(true);
     setIsOpen(false);
@@ -50,7 +53,16 @@ export default function UserMoreMenu(props) {
       } catch (e) {
         console.log('e: ', e.response);
       }
-    } else if (props.type == 'doctor') {
+
+    } else if(props.type=="patient"){
+      try {
+        const res = await apiInstance.delete(`user/${props.data?._id}`);
+        console.log('res: ', res);
+        props.getAllpatient();
+      } catch (e) {
+        console.log('e: ', e.response);
+      }
+    }  else if (props.type == 'doctor') {
       try {
         const res = await apiInstance.delete(`user/${props.data?._id}`);
         console.log('res: ', res);
@@ -60,7 +72,12 @@ export default function UserMoreMenu(props) {
         console.log('e: ', e.response);
       }
     }
-  };
+
+
+
+   
+    }
+    
 
   return (
     <>
@@ -104,7 +121,34 @@ export default function UserMoreMenu(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {props.type == 'patient' ? (
+        { props.type == 'patient' ? <PatientModel
+        isPatientEdit
+        
+        handleClose={handleClose}
+        getAllpatient={props.getAllpatient}
+        patient={props.data}
+        /> : props.type == 'Department' ?  <DepartmentModal
+          isEditData
+          handleClose={handleClose}
+          singleData={newData}
+          getAllData={props.getAllData}
+        /> : props.type == 'Department' ? (
+          <DepartmentModal
+            isEditData
+            handleClose={handleClose}
+            singleData={newData}
+            getAllData={props.getAllData}
+          />
+        ) : props.type == 'doctor' ? (
+          <DoctorModal
+            isDoctorEdit
+            closeModal={handleClose}
+            doctorSingleData={props.data}
+            getAllDoctor={props.getAllDoctor}
+          />
+        ) : null }
+    
+        {/* {props.type == 'patient' ? (
           <PatientModel />
         ) : props.type == 'Department' ? (
           <DepartmentModal
@@ -120,7 +164,7 @@ export default function UserMoreMenu(props) {
             doctorSingleData={props.data}
             getAllDoctor={props.getAllDoctor}
           />
-        ) : null}
+        ) : null} */}
       </Modal>
     </>
   );

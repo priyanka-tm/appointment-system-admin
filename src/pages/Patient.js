@@ -137,8 +137,10 @@ export default function Patient() {
       const res = await apiInstance.get('user/?role=patient');
       console.log('resss===', res);
       setPost(res.data.data);
+      // closeModal();
     } catch (error) {
       console.log('resss===', error.response);
+      // closeModal();
     }
   };
 
@@ -176,7 +178,7 @@ export default function Patient() {
             aria-describedby="modal-modal-description"
           >
             
-          <PatientModel closeModal={handleClose} />
+          <PatientModel closeModal={handleClose} getAllpatient={getPatient} />
           </Modal>
           {/* {open && <Newpatient closeModal={handleClose} getAllpatient={getPatient}  openModal={open} />} */}
         </Stack>
@@ -236,7 +238,7 @@ export default function Patient() {
                           </TableCell> */}
 
                         <TableCell align="right">
-                          <UserMoreMenu patient={row}  getAllpatient={getPatient} type='patient' />
+                          <UserMoreMenu data={row}  getAllpatient={getPatient} type='patient' />
                         </TableCell>
                       </TableRow>
                     );

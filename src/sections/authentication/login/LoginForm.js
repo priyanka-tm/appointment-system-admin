@@ -54,6 +54,7 @@ export default function LoginForm() {
     console.log('data: ', data);
     setLoader(true)
     try {
+
       const res = await apiInstance.post('auth/login', data);
       console.log('res: ', res);
 
@@ -65,6 +66,7 @@ export default function LoginForm() {
           res.data.data.phone,
           res.data.data
         );
+        console.log('resssssssss status',res.status);
       setLoader(false);
 
         navigate('dashboard/patient');
