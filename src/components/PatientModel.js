@@ -6,12 +6,10 @@ import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import axios from "axios";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { apiInstance } from 'src/httpClient/httpClient';
 // import {CircularProgress} from '@mui/icons-material'
 import {CircularProgress} from '@mui/material';
-import is from "date-fns/locale/is";
 
 const style = {
     position: 'absolute',
@@ -40,7 +38,6 @@ const style = {
     const [email,setEmail] = useState(patient?.email || '');
     const [phone , setPhone] = useState(patient?.phone || '');
     const [name,setName] = useState(patient?.name || '');
-    const [address,setAddress] = useState(patient?.address || '')
     const [loader, setLoader] = useState(false);
 
     const newPatient = async () =>{
@@ -49,7 +46,6 @@ const style = {
         "email":email,
         "phone":phone,
         "name":name,
-        "address":address
       }
       // console.log('-----',Addpatient);
       setLoader(true);
@@ -71,7 +67,7 @@ const style = {
         const response = await apiInstance.post('user', Addpatient)
         console.log('ressssssssssssssssssssssssssssssss===',response)
         setLoader(false);
-        closeModal();
+        handleClose();
         getAllpatient();
       }catch(error){
         setLoader(false);

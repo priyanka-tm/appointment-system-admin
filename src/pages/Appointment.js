@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import Newpatient from './Newpatient';
 // material
 import {
   Card,
@@ -27,14 +26,15 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashbo
 //
 import USERLIST from '../_mocks_/user';
 import Newappointment from './Newappointment'
-
+import { apiInstance } from 'src/httpClient/httpClient';
+import moment from "moment"
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'doctor', label: 'Doctor id', alignRight: false },
-  { id: 'patient', label: 'Patient id', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'address', label: 'Address', alignRight: false },
+  { id: 'doctor', label: 'Doctor Name', alignRight: false },
+  { id: 'patient', label: 'Patient Name', alignRight: false },
+  { id: 'patient', label: 'Appoiment Date', alignRight: false },
+  { id: 'message', label: 'massage', alignRight: false },
   { id: '' }
 ];
 
@@ -76,6 +76,23 @@ export default function Appointment() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [post, setPost] = useState([]);
+
+  useEffect(() => {
+    getPatient();
+  }, [])
+
+  const getPatient = async () => {
+    // setLoader(true);
+    try {
+      const res = await apiInstance.get('appointment');
+      console.log('resssssssssssssssssssssssssssssssssss===', res);
+      setPost(res.data.data);
+    } catch (error) {
+      console.log('resss===', error.response);
+    }
+  };
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -175,10 +192,10 @@ export default function Appointment() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
+                  {post
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, doctor, patient,date, address} = row;
+                      const { id, doctor, patient,appointmentdate,message} = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -190,23 +207,24 @@ export default function Appointment() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
+                          {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, doctor)}
                             />
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               {/* <Avatar alt={name} src={avatarUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
-                                {doctor}
+                                {doctor?.name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{patient}</TableCell>
-                          <TableCell align="left">{date}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
+                          {/* <TableCell align="left">{doctor}</TableCell> */}
+                          <TableCell align="left">{patient?.name}</TableCell>
+                          <TableCell align="left">{moment(appointmentdate).format("DD MM YYYY")}</TableCell>       
+                          <TableCell align="left">{message}</TableCell>
                           {/* <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -217,7 +235,7 @@ export default function Appointment() {
                           </TableCell> */}
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <UserMoreMenu getallApoiment={getPatient} />
                           </TableCell>
                         </TableRow>
                       );

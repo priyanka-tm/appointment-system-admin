@@ -72,10 +72,6 @@ export default function UserMoreMenu(props) {
         console.log('e: ', e.response);
       }
     }
-
-
-
-   
     }
     
 
