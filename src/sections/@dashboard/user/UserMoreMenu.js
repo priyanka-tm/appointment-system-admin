@@ -72,7 +72,16 @@ export default function UserMoreMenu(props) {
         console.log('e: ', e.response);
       }
     }
-
+    else if (props.type == 'presciption') {
+      try {
+        const res = await apiInstance.delete(`presciption/${props.data?._id}`);
+        console.log('res: ', res);
+        props.getAllPresciption();
+        setIsOpen(false);
+      } catch (e) {
+        console.log('e: ', e.response);
+      }
+    }
 
 
    
