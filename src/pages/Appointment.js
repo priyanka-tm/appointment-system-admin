@@ -15,7 +15,7 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -28,6 +28,8 @@ import USERLIST from '../_mocks_/user';
 import Newappointment from './Newappointment'
 import { apiInstance } from 'src/httpClient/httpClient';
 import moment from "moment"
+import { Modal } from '@material-ui/core';
+import AppoimentModel from 'src/components/AppoimentModel';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -79,10 +81,10 @@ export default function Appointment() {
   const [post, setPost] = useState([]);
 
   useEffect(() => {
-    getPatient();
+    getAppoiment();
   }, [])
 
-  const getPatient = async () => {
+  const getAppoiment = async () => {
     // setLoader(true);
     try {
       const res = await apiInstance.get('appointment');
@@ -169,7 +171,15 @@ export default function Appointment() {
           >
             New Appointment
           </Button>
-          {open && <Newappointment closeModal={handleClose} openModal={open}/>}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <AppoimentModel closeModal={handleClose} getallAppoiment={getAppoiment} />
+            </Modal>
+          {/* {open && <Newappointment closeModal={handleClose} openModal={open}/>} */}
         </Stack> 
 
         <Card>
@@ -223,7 +233,7 @@ export default function Appointment() {
                           </TableCell>
                           {/* <TableCell align="left">{doctor}</TableCell> */}
                           <TableCell align="left">{patient?.name}</TableCell>
-                          <TableCell align="left">{moment(appointmentdate).format("DD MM YYYY")}</TableCell>       
+                          <TableCell align="left">{moment(appointmentdate).format("DD/MM/YYYY")}</TableCell>       
                           <TableCell align="left">{message}</TableCell>
                           {/* <TableCell align="left">
                             <Label
@@ -235,7 +245,7 @@ export default function Appointment() {
                           </TableCell> */}
 
                           <TableCell align="right">
-                            <UserMoreMenu getallApoiment={getPatient} />
+                            <UserMoreMenu data={row} getallAppoiment={getAppoiment} type="appoiment" />
                           </TableCell>
                         </TableRow>
                       );

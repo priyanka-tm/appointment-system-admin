@@ -32,7 +32,7 @@ const style = {
     color: theme.palette.text.secondary,
   })); 
 
-  const PatientModel = ({handleClose,closeModal,getAllpatient,isPatientEdit,oneData,patient}) =>{
+  const PatientModel = ({handleClose,getAllpatient,isPatientEdit,patient}) =>{
   
     console.log('getAllpatient====',getAllpatient);
     const [email,setEmail] = useState(patient?.email || '');

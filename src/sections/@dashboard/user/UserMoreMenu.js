@@ -22,11 +22,12 @@ import { apiInstance } from './../../../httpClient/httpClient/index';
 import PatientModel from 'src/components/PatientModel';
 import { DashboardCustomizeRounded } from '@mui/icons-material';
 import DoctorModal from 'src/components/DoctorModal';
+import AppoimentModel from 'src/components/AppoimentModel'
 
 // ----------------------------------------------------------------------
 
 export default function UserMoreMenu(props) {
-  console.log('props: ', props.data);
+  console.log('props: ', props);
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -70,6 +71,14 @@ export default function UserMoreMenu(props) {
         setIsOpen(false);
       } catch (e) {
         console.log('e: ', e.response);
+      }
+    }else if (props.type == 'appoiment'){
+      try{
+        const res = await apiInstance.delete(`appointment/${props.data?._id}`);
+        console.log('response:::::',res);
+        props.getallAppoiment();
+      }catch(error){
+        console.log('error::::',error.response);
       }
     }
     }
@@ -119,7 +128,6 @@ export default function UserMoreMenu(props) {
       >
         { props.type == 'patient' ? <PatientModel
         isPatientEdit
-        
         handleClose={handleClose}
         getAllpatient={props.getAllpatient}
         patient={props.data}
@@ -142,7 +150,14 @@ export default function UserMoreMenu(props) {
             doctorSingleData={props.data}
             getAllDoctor={props.getAllDoctor}
           />
-        ) : null }
+        ) : props.type == 'appoiment' ? (
+          <AppoimentModel
+          isAppoimentEdit
+          closeModal={handleClose}
+          AppoimentSingleData={props.data}
+          getallAppoiment={props.getallAppoiment}
+          />
+        ) :null }
     
         {/* {props.type == 'patient' ? (
           <PatientModel />
