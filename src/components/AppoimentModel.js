@@ -26,7 +26,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width:750,
-    height:300,
+    height:'auto',
     bgcolor: 'background.paper',
     borderRadius:1,
     boxShadow: 24,
@@ -41,37 +41,38 @@ const style = {
     color: theme.palette.text.secondary,
   })); 
 
-  const   AppoimentModel = ({closeModal,getallAppoiment,isAppoimentEdit,AppoimentSingleData}) =>{
-    console.log('getAllAppoiment====',AppoimentSingleData);
-    console.log('getAllAppoiment0000000000000000000000====',AppoimentSingleData?.appointmentdate);
-    console.log('getAllAp====================================',moment(AppoimentSingleData?.appointmentdate).format('MM/DD/YYYY'));
+  const AppoimentModel = ({closeModal,getallAppoiment,isAppoimentEdit,AppoimentSingleData}) =>{
+
    
     const [alldata, setAllData] = useState([]);
     const [doctor,setDoctor] = useState(AppoimentSingleData?.name || '');
     const [patient,setPatient] = useState(AppoimentSingleData?.patient || "");
     const [appointmentdate,setAppointmentdate] = useState(moment(AppoimentSingleData?.appointmentdate).format('MM/DD/YYYY') ||  new Date());
     const [message,setMessage] = useState(AppoimentSingleData?.message || '');    
+    const [email,setEmail] = useState(AppoimentSingleData?.email || '');    
+    const [phone,setPhone] = useState(AppoimentSingleData?.phone || '');    
     const [loader, setLoader] = useState(false);
-    // const [value, setValue] = React.useState(AppoimentSingleData?.appointmentdate || new Date('2014-08-18T21:11:54'));
-
+   
     useEffect(() => {
       getDoctor();
     }, []);
 
     const handleChange = (newValue) => {
       console.log('e.target.value: ',newValue);
-     
         setAppointmentdate(newValue);
       };
 
     const newAppointment = async () =>{
       const AddAppoiment = {
+        "role":"patient",
         "doctor":doctor,
         "patient":patient,
         "appointmentdate":appointmentdate,
-        "massge":message,
+        "message":message,
+        "email":email,
+        "phone":phone,
       }
-      // console.log('-----',AddAppoiment);
+      // console.log('-----=================================',AddAppoiment);
       setLoader(true);
     if (isAppoimentEdit){
       try{
@@ -89,21 +90,18 @@ const style = {
     }else{
       try{
         const response = await apiInstance.post('appointment/publicRegistra', AddAppoiment)
-        console.log('ressssssss===',response)
+        console.log('cretae --------------ressssssss===',response)
         setLoader(false);
         closeModal();
         getallAppoiment();
       }catch(error){
         setLoader(false);
-        console.log("---------------your-------------",error.response);
+        console.log("---------------error-------------",error.response);
         closeModal();
       
       }
     }
   }
-
-
-
   const getDoctor = async () => {
     // setLoader(true);
     try {
@@ -137,6 +135,7 @@ const style = {
                 id="category"
                 label="Doctor"
                 onChange={(e) => {
+                  console.log('eeeeeeeeeeeeeee',e.target.value);
                   setDoctor(e.target.value);
                 }}
                 style={{ width: '100%', height: '100%' }}
@@ -144,7 +143,6 @@ const style = {
                 {alldata &&
                   alldata?.map((e) => {
                     return <MenuItem value={e._id}>{e.name}</MenuItem>;
-                    console.log('eeeeeeeeeeeeeee',e.id);
                   })}
               </Select>
             </FormControl>
@@ -154,7 +152,7 @@ const style = {
               </Grid>
               <Grid container item xs={6}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{width:"100%"}}>
         <DesktopDatePicker
           label="Date desktop"
           // inputFormat="dd/mm/yyyy"
@@ -166,7 +164,15 @@ const style = {
     </LocalizationProvider>
               </Grid>
               <Grid container item xs={6}>
-              <TextField label={'massge'} value={message} onChange={(e)=>{setMessage(e.target.value)}}  id="massge" style={{width:"100%" ,height:"100%"}} />
+              <TextField label={'massge'} value={message} onChange={(e)=>{setMessage(e.target.value)}}  id="message" style={{width:"100%" ,height:"100%"}} />
+              </Grid>
+
+              <Grid container item xs={6}>
+              <TextField label={'Email'} value={patient?.email}  onChange={(e)=>{setEmail(e.target.value)}}  id="email" style={{width:"100%" ,height:"100%"}} />
+              </Grid>
+
+              <Grid container item xs={6}>
+              <TextField label={'Phone'} value={patient?.phone}  onChange={(e)=>{setPhone(e.target.value)}}  id="phone" style={{width:"100%" ,height:"100%"}} />
               </Grid>
               </Grid>
               <Button variant="contained" style={{width:"100%" ,height:"15%",marginTop:"3%"}} onClick={newAppointment}  disableElevation>

@@ -37,7 +37,8 @@ const TABLE_HEAD = [
   { id: 'patient', label: 'Patient Name', alignRight: false },
   { id: 'patient', label: 'Appoiment Date', alignRight: false },
   { id: 'message', label: 'massage', alignRight: false },
-  { id: '' }
+  { id: 'email', label: 'email', alignRight: false },
+  { id: 'phone', label: 'phone', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -205,7 +206,7 @@ export default function Appointment() {
                   {post
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, doctor, patient,appointmentdate,message} = row;
+                      const { id, doctor, patient,appointmentdate,message,email,phone} = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -235,6 +236,8 @@ export default function Appointment() {
                           <TableCell align="left">{patient?.name}</TableCell>
                           <TableCell align="left">{moment(appointmentdate).format("MM/DD/YYYY")}</TableCell>       
                           <TableCell align="left">{message}</TableCell>
+                          <TableCell align="left">{patient?.email}</TableCell>
+                          <TableCell align="left">{patient?.phone}</TableCell>
                           {/* <TableCell align="left">
                             <Label
                               variant="ghost"
