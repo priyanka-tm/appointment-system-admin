@@ -233,7 +233,7 @@ export default function Appointment() {
                           </TableCell>
                           {/* <TableCell align="left">{doctor}</TableCell> */}
                           <TableCell align="left">{patient?.name}</TableCell>
-                          <TableCell align="left">{moment(appointmentdate).format("DD/MM/YYYY")}</TableCell>       
+                          <TableCell align="left">{moment(appointmentdate).format("MM/DD/YYYY")}</TableCell>       
                           <TableCell align="left">{message}</TableCell>
                           {/* <TableCell align="left">
                             <Label

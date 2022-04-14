@@ -39,7 +39,7 @@ const TABLE_HEAD = [
   { id: 'category', label: 'Department', alignRight: false }
 ];
 
-// ----------------------------------------------------------------------
+//  
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

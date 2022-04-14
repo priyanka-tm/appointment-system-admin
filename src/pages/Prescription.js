@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -26,6 +26,8 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashbo
 //
 import USERLIST from '../_mocks_/user';
 import Newprescription from './Newprescription'
+import { apiInstance } from 'src/httpClient/httpClient';
+import moment from 'moment'
 
 // ----------------------------------------------------------------------
 
@@ -75,11 +77,26 @@ export default function Prescription() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [post, setPost] = useState([]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+  };
+
+  useEffect(() => {
+    getPresciption();
+  }, []);
+  const getPresciption = async () => {
+    console.log('------get all doc-----------------------------------------');
+    // setLoader(true);
+    try {
+      const res = await apiInstance.get('presciption');
+      setPost(res.data.data);
+    } catch (error) {
+      console.log('resss===', error.response);
+    }
   };
 
   const handleSelectAllClick = (event) => {
@@ -121,6 +138,8 @@ export default function Prescription() {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
+
+
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
@@ -174,12 +193,13 @@ export default function Prescription() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
+                  {post
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const { id, doctor, patient,date,note,media} = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
+ 
+                  
                       return (
                         <TableRow
                           hover
@@ -189,22 +209,17 @@ export default function Prescription() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, doctor)}
-                            />
-                          </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               {/* <Avatar alt={name} src={avatarUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
-                                {doctor}
+                                {doctor.name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{patient}</TableCell>
-                          <TableCell align="left">{date}</TableCell>
+                          <TableCell align="left
+                          ">{patient.name}</TableCell>
+                          <TableCell align="left">{moment(date).format('L')}</TableCell>
                           <TableCell align="left">{note}</TableCell>
                           <TableCell align="left">{media}</TableCell>
                           {/* <TableCell align="left">
@@ -217,7 +232,7 @@ export default function Prescription() {
                           </TableCell> */}
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <UserMoreMenu type="presciption" data={row} getAllPresciption={getPresciption}/>
                           </TableCell>
                         </TableRow>
                       );

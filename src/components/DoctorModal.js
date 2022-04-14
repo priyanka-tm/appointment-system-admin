@@ -82,7 +82,7 @@ const DoctorModal = ({
   // };
 
   useEffect(() => {
-    getAlldepartmentname();
+    getAllDoctorData();
   }, []);
   // console.log(doctorData);
   const saveUser = async (e) => {
@@ -125,10 +125,10 @@ const DoctorModal = ({
     }
   };
 
-  const getAlldepartmentname = async () => {
+  const getAllDoctorData = async () => {
     try {
       const res = await apiInstance.get(`category`);
-      console.log('all user data', res);
+      console.log('all doctor data', res);
       setAllData(res.data.data);
     } catch (error) {
       console.log('error', error);

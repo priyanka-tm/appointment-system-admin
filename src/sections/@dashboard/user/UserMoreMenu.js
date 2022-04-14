@@ -72,13 +72,22 @@ export default function UserMoreMenu(props) {
       } catch (e) {
         console.log('e: ', e.response);
       }
-    }else if (props.type == 'appoiment'){
+    } else if (props.type == 'appoiment'){
       try{
         const res = await apiInstance.delete(`appointment/${props.data?._id}`);
         console.log('response:::::',res);
         props.getallAppoiment();
       }catch(error){
         console.log('error::::',error.response);
+      }
+    }else if (props.type == 'presciption') {
+      try {
+        const res = await apiInstance.delete(`presciption/${props.data?._id}`);
+        console.log('res: ', res);
+        props.getAllPresciption();
+        setIsOpen(false);
+      } catch (e) {
+        console.log('e: ', e.response);
       }
     }
     }
@@ -156,6 +165,7 @@ export default function UserMoreMenu(props) {
           closeModal={handleClose}
           AppoimentSingleData={props.data}
           getallAppoiment={props.getallAppoiment}
+          getAllDoctor={props.getAllDoctor}
           />
         ) :null }
     
