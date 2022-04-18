@@ -237,7 +237,7 @@ export default function Appointment() {
                           <TableCell align="left">{moment(appointmentdate).format("MM/DD/YYYY")}</TableCell>       
                           <TableCell align="left">{message}</TableCell>
                           <TableCell align="left">{patient?.email}</TableCell>
-                          <TableCell align="left">{patient?.phone}</TableCell>
+                          <TableCell align="left">{phone}</TableCell>
                           {/* <TableCell align="left">
                             <Label
                               variant="ghost"
