@@ -12,31 +12,14 @@ import { getData, removeUserSession } from 'src/utils/common';
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-    linkTo: '/'
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-    linkTo: '#'
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-    linkTo: '#'
-  }
-];
-
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState(getData());
   const navigate = useNavigate();
-  const data = getData();
+  console.log('data: ', data);
 
   const handleOpen = () => {
     setOpen(true);
@@ -83,10 +66,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {data?.name || 'Admin'}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {data?.email || 'admin@gmail.com'}
           </Typography>
         </Box>
 

@@ -16,7 +16,7 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination,
+  TablePagination
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -36,7 +36,6 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'phone', label: 'Phone', alignRight: false },
-  { id: 'address', label: 'Address', alignRight: false },
   { id: '' }
 ];
 
@@ -144,9 +143,9 @@ export default function Patient() {
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - post.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(post, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
@@ -177,8 +176,7 @@ export default function Patient() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            
-          <PatientModel closeModal={handleClose} getAllpatient={getPatient} />
+            <PatientModel closeModal={handleClose} getAllpatient={getPatient} />
           </Modal>
           {/* {open && <Newpatient closeModal={handleClose} getAllpatient={getPatient}  openModal={open} />} */}
         </Stack>
@@ -188,6 +186,7 @@ export default function Patient() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            type="patient"
           />
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -196,39 +195,39 @@ export default function Patient() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={post.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {post.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    console.log('-------post', post);
-                    const { id, name, email, phone, address } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
+                  {filteredUsers
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      console.log('-------post', post);
+                      const { id, name, email, phone, address } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
 
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell component="th" scope="row">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={name} src={avatarUrl} /> */}
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{phone}</TableCell>
-                        <TableCell align="left">{address}</TableCell>
-                        {/* <TableCell align="left">
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell component="th" scope="row">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              {/* <Avatar alt={name} src={avatarUrl} /> */}
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{phone}</TableCell>
+                          {/* <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={(status === 'banned' && 'error') || 'success'}
@@ -237,12 +236,12 @@ export default function Patient() {
                             </Label>
                           </TableCell> */}
 
-                        <TableCell align="right">
-                          <UserMoreMenu data={row}  getAllpatient={getPatient} type='patient' />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                          <TableCell align="right">
+                            <UserMoreMenu data={row} getAllpatient={getPatient} type="patient" />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
@@ -265,7 +264,7 @@ export default function Patient() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={post.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

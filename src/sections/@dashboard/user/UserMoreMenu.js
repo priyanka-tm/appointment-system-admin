@@ -22,17 +22,18 @@ import { apiInstance } from './../../../httpClient/httpClient/index';
 import PatientModel from 'src/components/PatientModel';
 import { DashboardCustomizeRounded } from '@mui/icons-material';
 import DoctorModal from 'src/components/DoctorModal';
-import AppoimentModel from 'src/components/AppoimentModel'
+import AppoimentModel from 'src/components/AppoimentModel';
+import Newprescription from './../../../pages/Newprescription';
 
 // ----------------------------------------------------------------------
 
 export default function UserMoreMenu(props) {
-  console.log('props: ', props);
+  console.log('props:============================ ', props);
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [newData, setNewData] = useState({});
-  const [data,setData] = useState({})
+  const [data, setData] = useState({});
 
   const handleOpen = (data) => {
     setNewData(data);
@@ -49,49 +50,42 @@ export default function UserMoreMenu(props) {
     if (props.type == 'Department') {
       try {
         const res = await apiInstance.delete(`category/${props.data?._id}`);
-        console.log('res: ', res);
         props.getAllData();
       } catch (e) {
         console.log('e: ', e.response);
       }
-
-    } else if(props.type=="patient"){
+    } else if (props.type == 'patient') {
       try {
         const res = await apiInstance.delete(`user/${props.data?._id}`);
-        console.log('res: ', res);
         props.getAllpatient();
       } catch (e) {
         console.log('e: ', e.response);
       }
-    }  else if (props.type == 'doctor') {
+    } else if (props.type == 'doctor') {
       try {
         const res = await apiInstance.delete(`user/${props.data?._id}`);
-        console.log('res: ', res);
         props.getAllDoctor();
         setIsOpen(false);
       } catch (e) {
         console.log('e: ', e.response);
       }
-    } else if (props.type == 'appoiment'){
-      try{
+    } else if (props.type == 'appoiment') {
+      try {
         const res = await apiInstance.delete(`appointment/${props.data?._id}`);
-        console.log('response:::::',res);
         props.getallAppoiment();
-      }catch(error){
-        console.log('error::::',error.response);
+      } catch (error) {
+        console.log('error::::', error.response);
       }
-    }else if (props.type == 'presciption') {
+    } else if (props.type == 'presciption') {
       try {
         const res = await apiInstance.delete(`presciption/${props.data?._id}`);
-        console.log('res: ', res);
-        props.getAllPresciption();
         setIsOpen(false);
+        props.getPresciption();
       } catch (e) {
         console.log('e: ', e.response);
       }
     }
-    }
-    
+  };
 
   return (
     <>
@@ -135,17 +129,21 @@ export default function UserMoreMenu(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        { props.type == 'patient' ? <PatientModel
-        isPatientEdit
-        handleClose={handleClose}
-        getAllpatient={props.getAllpatient}
-        patient={props.data}
-        /> : props.type == 'Department' ?  <DepartmentModal
-          isEditData
-          handleClose={handleClose}
-          singleData={newData}
-          getAllData={props.getAllData}
-        /> : props.type == 'Department' ? (
+        {props.type == 'patient' ? (
+          <PatientModel
+            isPatientEdit
+            handleClose={handleClose}
+            getAllpatient={props.getAllpatient}
+            patient={props.data}
+          />
+        ) : props.type == 'Department' ? (
+          <DepartmentModal
+            isEditData
+            handleClose={handleClose}
+            singleData={newData}
+            getAllData={props.getAllData}
+          />
+        ) : props.type == 'Department' ? (
           <DepartmentModal
             isEditData
             handleClose={handleClose}
@@ -161,31 +159,27 @@ export default function UserMoreMenu(props) {
           />
         ) : props.type == 'appoiment' ? (
           <AppoimentModel
-          isAppoimentEdit
-          closeModal={handleClose}
-          AppoimentSingleData={props.data}
-          getallAppoiment={props.getallAppoiment}
-          getAllDoctor={props.getAllDoctor}
-          />
-        ) :null }
-    
-        {/* {props.type == 'patient' ? (
-          <PatientModel />
-        ) : props.type == 'Department' ? (
-          <DepartmentModal
-            isEditData
-            handleClose={handleClose}
-            singleData={newData}
-            getAllData={props.getAllData}
-          />
-        ) : props.type == 'doctor' ? (
-          <DoctorModal
-            isDoctorEdit
+            isAppoimentEdit
             closeModal={handleClose}
-            doctorSingleData={props.data}
+            AppoimentSingleData={props.data}
+            getallAppoiment={props.getallAppoiment}
             getAllDoctor={props.getAllDoctor}
           />
-        ) : null} */}
+        ) : props.type == 'presciption' ? (
+          <Newprescription
+            // isAppoimentEdit
+            isEdit
+            closeModal={handleClose}
+            singleData={props.data}
+            // allDoctor={props.allDoctor}
+            // allPatient={props.allPatient}
+            getPresciption={props.getPresciption}
+
+            // AppoimentSingleData={props.data}
+            // getallAppoiment={props.getallAppoiment}
+            // getAllDoctor={props.getAllDoctor}
+          />
+        ) : null}
       </Modal>
     </>
   );

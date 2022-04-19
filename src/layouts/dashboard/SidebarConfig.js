@@ -12,16 +12,6 @@ import filePrescription from '@iconify/icons-fa-solid/file-prescription';
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
 const sidebarConfig = [
-  // {
-  //   title: 'dashboard',
-  //   path: '/dashboard/app',
-  //   icon: getIcon('eva:pie-chart-2-fill')
-  // },
-  // {
-  //   title: 'user',
-  //   path: '/dashboard/user',
-  //   icon: getIcon(patient24Filled)
-  // },
   {
     title: 'patient',
     path: '/dashboard/patient',
@@ -37,10 +27,7 @@ const sidebarConfig = [
     path: '/dashboard/department',
     icon: getIcon(categoryIcon)
   },
-  // {
-  //   title: 'login',
-  //   path: '/login',
-  // },
+
   {
     title: 'appointment',
     path: '/dashboard/appointment',
@@ -50,11 +37,6 @@ const sidebarConfig = [
     title: 'prescription',
     path: '/dashboard/prescription',
     icon: getIcon(filePrescription)
-  },
-  {
-    title: 'Log Out',
-    path: '/404',
-    icon: getIcon(logoutIcon)
   }
 ];
 
