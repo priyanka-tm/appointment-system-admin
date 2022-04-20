@@ -176,7 +176,7 @@ export default function Patient() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <PatientModel closeModal={handleClose} getAllpatient={getPatient} />
+            <PatientModel handleClose={handleClose} getAllpatient={getPatient} />
           </Modal>
           {/* {open && <Newpatient closeModal={handleClose} getAllpatient={getPatient}  openModal={open} />} */}
         </Stack>
