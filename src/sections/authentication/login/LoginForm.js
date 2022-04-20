@@ -14,6 +14,7 @@ import axios from 'axios';
 import { apiInstance } from 'src/httpClient/httpClient';
 import { useNavigate } from 'react-router-dom';
 import { setUserSession } from 'src/utils/common';
+// import { ReactComponent as YourSvg } from "../components/attech/image/logo.svg";
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -130,7 +131,7 @@ export default function LoginForm() {
         <Stack spacing={2} direction="row">
           <Button
             variant="contained"
-            style={{ width: '92%', height: '10%', marginTop: '3%' }}
+            style={{ width: '92%', height: '100%', marginTop: '3%' }}
             onClick={login}
           >
             Login   

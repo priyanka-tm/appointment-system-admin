@@ -32,7 +32,7 @@ const style = {
     color: theme.palette.text.secondary,
   })); 
 
-  const PatientModel = ({closeModal,getAllpatient,isPatientEdit,patient}) =>{
+  const PatientModel = ({handleClose,getAllpatient,isPatientEdit,patient}) =>{
   
     console.log('getAllpatient====',getAllpatient);
     const [email,setEmail] = useState(patient?.email || '');
@@ -53,28 +53,25 @@ const style = {
       try{
         console.log('-----try---');
         const response = await apiInstance.put(`user/${patient?._id}`,Addpatient)
-        console.log('ressssssssssssssssssssssssssssssss===',response)
+        console.log('ressssssss===',response)
         setLoader(false);
-        closeModal();
         getAllpatient();
+        handleClose();
       }catch(error){
         setLoader(false);
-        closeModal();
         console.log("---------------your-------------",error.response);
-
       }  
     }else{
       try{
         const response = await apiInstance.post('user', Addpatient)
         console.log('ressssssssssssssssssssssssssssssss===',response)
         setLoader(false);
-        closeModal();
         getAllpatient();
+        handleClose();
       }catch(error){
         setLoader(false);
-        closeModal();
         console.log("---------------your-------------",error.response);
-      
+        handleClose();
       }
     }
   }
@@ -90,7 +87,7 @@ const style = {
                 </Grid>
                 <Grid  item xs={3} sx={{display: 'flex',justifyContent:'flex-end'}}>
                 {/* <Button color="secondary" onClick={closeModal} style={{borderRadius:2}}>X</Button> */}
-                <CloseRoundedIcon onClick={closeModal} />
+                <CloseRoundedIcon onClick={handleClose} />
                 </Grid>
               </Grid>
               <Grid container spacing={3} sx={{marginTop:1}}>

@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://192.168.0.123:13000/api/';
+export const BASE_URL = 'https://mm-doctor-appointments.herokuapp.com/api/';
 
 export const getUser = () => {
   const userStr = sessionStorage.getItem('user');
