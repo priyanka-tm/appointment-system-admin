@@ -65,7 +65,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.patient?.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user?.email.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -204,9 +204,10 @@ export default function Patient() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      console.log('-------post', post);
+                      
                       const { id, name, email, phone, address } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
+                  console.log('filteredUsers: ', filteredUsers);
 
                       return (
                         <TableRow

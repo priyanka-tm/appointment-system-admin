@@ -69,7 +69,7 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.patient?.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => _user?.doctor?.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -92,7 +92,6 @@ export default function Appointment() {
     // setLoader(true);
     try {
       const res = await apiInstance.get('appointment');
-      console.log('resssssssssssssssssssssssssssssssssss===', res);
       setPost(res.data.data);
     } catch (error) {
       console.log('resss===', error.response);
